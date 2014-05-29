@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarmuBerlo", "JarmuBerlo\Ja
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarmuBerloDAL", "JarmuBerloDAL\JarmuBerloDAL.csproj", "{3D2F1EF7-9A58-45AF-8B61-C4E59C864FCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarmuBerlo.Tests", "JarmuBerlo.Tests\JarmuBerlo.Tests.csproj", "{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{3D2F1EF7-9A58-45AF-8B61-C4E59C864FCF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3D2F1EF7-9A58-45AF-8B61-C4E59C864FCF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3D2F1EF7-9A58-45AF-8B61-C4E59C864FCF}.Release|x86.ActiveCfg = Release|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C59CB4C1-8DD1-4AA1-AC2F-8434290E9E1F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
