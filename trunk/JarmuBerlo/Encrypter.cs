@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 namespace JarmuBerlo
 {
     //jelszavak enkriptalasahoz es dekriptalasahoz hasznalt osztaly
+
     public static class Encrypter
     {
         private const string AesIV = "!M43NCRYPT10NK3Y";

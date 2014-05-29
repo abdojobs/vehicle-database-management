@@ -11,7 +11,6 @@ using System.IO;
 namespace JarmuBerloDAL
 {
     //egy adatbazisbeli berlest reprezentalo osztaly
-    
     public class Loan
     {
         private int loanID;
@@ -150,9 +149,6 @@ namespace JarmuBerloDAL
         //XML-t exportal a berlesekkel
         public void ExportLoansXML(string file)
         {
-            //string query = "SELECT BerloNev, Telefonszam, Jogositvanyszam, Modell Jarmu, BerlesKezdete, BerlesVege, Szamla" +
-            //    " FROM Berlok Berlo, (SELECT Modell, BerlesKezdete, BerlesVege, Szamla, BerloID FROM Jarmuvek j, Berlesek b WHERE j.JarmuID = b.JarmuID) Berles" +
-            //    " WHERE Berlo.BerloID = Berles.BerloID ORDER BY Berlo.BerloID FOR XML AUTO"; //xml exporting with attributes
             string query = "SELECT BerloNev, Telefonszam, Jogositvanyszam, (SELECT GyartoNev, Modell Jarmu, BerlesKezdete, BerlesVege, Szamla FROM Jarmuvek j, Berlesek b, Gyartok g" + 
                 " WHERE j.JarmuID = b.JarmuID AND j.GyartoID = g.GyartoID AND b.BerloID = Berlo.BerloID FOR XML PATH('Berles'), TYPE) " +
                 " FROM Berlok Berlo WHERE EXISTS(SELECT * FROM Berlesek b WHERE b.BerloID = Berlo.BerloID) FOR XML AUTO, ROOT('OsszesBerlo')";
