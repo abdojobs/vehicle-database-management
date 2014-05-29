@@ -177,7 +177,6 @@ namespace JarmuBerloDAL
                 CloseConnection();
             }
             return error;
-
         }
 
         protected int ExecuteStoredProcedureNonQuery(string name, string[] parameterNames, string[] parameterValues)
