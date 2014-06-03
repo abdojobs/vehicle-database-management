@@ -47,16 +47,19 @@ namespace JarmuBerloDAL
         }
     }
 
-    public class Makers : DAL
+    //fuggoseg feloldasa abstract method hasznalataval
+    public class Makers
     {
         public List<Maker> GetMakerList()
         {
+            IDAL dal = GetDAL();
             string query = "SELECT * FROM Gyartok", error = string.Empty;
-            SqlDataReader rdr = ExecuteReader(query, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, ref error);
 
-            List<Maker> makerList = new List<Maker>();
+            List<Maker> makerList = null;
             if (error == "OK")
             {
+                makerList = new List<Maker>();
                 while (rdr.Read())
                 {
                     Maker m = new Maker();
@@ -67,9 +70,14 @@ namespace JarmuBerloDAL
                     makerList.Add(m);
                 }
             }
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
 
             return makerList;
+        }
+
+        public virtual IDAL GetDAL()
+        {
+            return new DAL();
         }
     }
 }

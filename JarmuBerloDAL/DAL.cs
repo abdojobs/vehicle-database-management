@@ -7,30 +7,30 @@ namespace JarmuBerloDAL
 {
     //absztrakt osztaly, az osszes tobbi adatbaziskezelo osztaly ezt terjeszti ki
     //tartalmazza az alap muveleteket: kapcsolat letrehozasa, zarasa, lekerdezes, tarolt eljaras vegrehajtasa
-    public abstract class DAL
+    public class DAL : IDAL
     {
-        protected static bool Connected;
-        protected static bool ConnectionCreated;
+        private static bool Connected;
+        private static bool ConnectionCreated;
 
-        protected static SqlConnection m_Connection;
-        protected string m_ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=JarmuBerles;Integrated Security=SSPI";
+        private static SqlConnection m_Connection;
+        private string m_ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=JarmuBerles;Integrated Security=SSPI";
 
-        protected bool IsConnectCreated()
+        public bool IsConnectCreated()
         {
             return ConnectionCreated;
         }
 
-        protected bool IsConnected()
+        public bool IsConnected()
         {
             return Connected;
         }
 
-        protected SqlConnection GetConnection()
+        public SqlConnection GetConnection()
         {
             return m_Connection;
         }
 
-        protected bool CreateConnection()
+        public bool CreateConnection()
         {
             if (ConnectionCreated != true)
             {
@@ -54,8 +54,7 @@ namespace JarmuBerloDAL
             }
         }
 
-
-        protected bool OpenConnection()
+        public bool OpenConnection()
         {
             if (Connected != true)
             {
@@ -87,7 +86,7 @@ namespace JarmuBerloDAL
             }
         }
 
-        protected object ExecuteScalar(string query, ref string errorMessage)
+        public object ExecuteScalar(string query, ref string errorMessage)
         {
             object value;
             try
@@ -108,8 +107,8 @@ namespace JarmuBerloDAL
             }
             return value;
         }
-
-        protected SqlDataReader ExecuteReader(string query, ref string errorMessage)
+        
+        public SqlDataReader ExecuteReader(string query, ref string errorMessage)
         {
             try
             {
@@ -128,7 +127,7 @@ namespace JarmuBerloDAL
             }
         }
         
-        protected SqlDataReader ExecuteReader(string query, string[] parameterNames, string[] parameters, ref string errorMessage)
+        public SqlDataReader ExecuteReader(string query, string[] parameterNames, string[] parameters, ref string errorMessage)
         {
             try
             {
@@ -151,14 +150,14 @@ namespace JarmuBerloDAL
             }
         }
         
-        protected void CloseDataReader(SqlDataReader rdr)
+        public void CloseDataReader(SqlDataReader rdr)
         {
             if (rdr != null)
                 rdr.Close();
             CloseConnection();
         }
-
-        protected string ExecuteNonQuery(string command)
+        
+        public string ExecuteNonQuery(string command)
         {
             string error;
             try
@@ -178,8 +177,8 @@ namespace JarmuBerloDAL
             }
             return error;
         }
-
-        protected int ExecuteStoredProcedureNonQuery(string name, string[] parameterNames, string[] parameterValues)
+        
+        public int ExecuteStoredProcedureNonQuery(string name, string[] parameterNames, string[] parameterValues)
         {
             try
             {
