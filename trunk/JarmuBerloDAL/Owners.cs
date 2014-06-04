@@ -56,17 +56,26 @@ namespace JarmuBerloDAL
         }
     }
 
-    public class Owners : DAL
+    public class Owners
     {
+        private IDAL dal;
+
+        public void SetDal(IDAL dal)
+        {
+            this.dal = dal;
+        }
+
         //visszateriti a tulajdonosok listajat
         public List<Owner> GetOwnerList()
         {
             string query = "SELECT * FROM Tulajdonosok", error = string.Empty;
-            SqlDataReader rdr = ExecuteReader(query, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, ref error);
+            dal.CreateConnection();
 
-            List<Owner> ownerList = new List<Owner>();
+            List<Owner> ownerList = null;
             if (error == "OK")
             {
+                ownerList = new List<Owner>();
                 while (rdr.Read())
                 {
                     Owner o = new Owner();
@@ -78,7 +87,7 @@ namespace JarmuBerloDAL
                     ownerList.Add(o);
                 }
             }
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
 
             return ownerList;
         }

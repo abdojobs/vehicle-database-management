@@ -65,8 +65,15 @@ namespace JarmuBerloDAL
         }
     }
 
-    public class Vehicles:DAL
+    public class Vehicles
     {
+        private IDAL dal;
+
+        public Vehicles(IDAL dal)
+        {
+            this.dal = dal;
+        }
+
         //megadja a jarmuvek listajat
         public List<Vehicle> GetVehicleList(string makerFilter, string categoryFilter)
         {
@@ -77,7 +84,7 @@ namespace JarmuBerloDAL
             string error = string.Empty;
             string[] parameterNames = { "@makerfilter", "@categoryfilter" };
             string[] parameters = { "%" + makerFilter + "%", "%" + categoryFilter + "%" };
-            SqlDataReader rdr = ExecuteReader(query, parameterNames, parameters, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, parameterNames, parameters, ref error);
             
             List<Vehicle> vehicleList = new List<Vehicle>();
             if (error == "OK")
@@ -96,7 +103,7 @@ namespace JarmuBerloDAL
                     vehicleList.Add(v);
                 }
             }
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
 
             return vehicleList;
         }
@@ -121,14 +128,14 @@ namespace JarmuBerloDAL
             parameters[5] = year;
             parameters[6] = model;
 
-            return ExecuteStoredProcedureNonQuery("JarmuHozzaadas", parameterNames, parameters);
+            return dal.ExecuteStoredProcedureNonQuery("JarmuHozzaadas", parameterNames, parameters);
         }
 
         //jarmu torlese
         public string RemoveVehicle(int vehicleId)
         {
             string query = "DELETE FROM Jarmuvek WHERE JarmuId = " + vehicleId;
-            return ExecuteNonQuery(query);
+            return dal.ExecuteNonQuery(query);
         }
 
         //jarmuvek exportalasa XML fileba
@@ -138,14 +145,14 @@ namespace JarmuBerloDAL
                 " WHERE j.GyartoID = g.GyartoID AND j.KategoriaID = Kategoria.KategoriaID FOR XML PATH('Jarmu'), TYPE)" +
                 " FROM Kategoriak Kategoria WHERE EXISTS(SELECT * FROM Jarmuvek j WHERE j.KategoriaID = Kategoria.KategoriaID) FOR XML AUTO, ROOT('OsszesJarmu')";
             string error = string.Empty;
-            SqlDataReader rdr = ExecuteReader(query, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, ref error);
             string result = "";
             while (rdr.Read())
             {
                 result += rdr[0].ToString();
             }
             File.WriteAllText(file,result.Replace("><", ">\n<"));
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
             XslCompiledTransform xslTrans = new XslCompiledTransform();
             xslTrans.Load("VehicleTransform.xslt");
             xslTrans.Transform(new XPathDocument(file), null, new XmlTextWriter(file.Replace(".xml", ".html"), null));

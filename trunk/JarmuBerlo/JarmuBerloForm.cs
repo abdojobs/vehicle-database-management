@@ -17,14 +17,13 @@ namespace JarmuBerlo
         Categories categories = new Categories();
         Makers makers = new Makers();
         Owners owners = new Owners();
-        Vehicles vehicles = new Vehicles();
-        Loans loans = new Loans();
+        Vehicles vehicles = new Vehicles(AbstractDALFactory.GetInstance());
+        Loans loans = new Loans(new DAL());
         Users users = new Users();
         UserGroups userGroups = new UserGroups();
         List<Loan> loanList;
         List<Vehicle> vehicleList;
         int user;
-        
         
         public JarmuBerloForm(LoginForm login, int user)
         {
