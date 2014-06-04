@@ -94,6 +94,7 @@ namespace JarmuBerloDAL
             return loanList;
         }
 
+
         //vegrehajt egy berles beszurast a tranzakcios tarolt eljaras meghivasaval
         public int Loan(int vehicleID, int loanerID, string startDate, string endDate)
         {
