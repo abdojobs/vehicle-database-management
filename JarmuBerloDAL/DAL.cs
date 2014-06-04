@@ -15,6 +15,8 @@ namespace JarmuBerloDAL
         private static SqlConnection m_Connection;
         private string m_ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=JarmuBerles;Integrated Security=SSPI";
 
+        public DAL() { }
+
         public bool IsConnectCreated()
         {
             return ConnectionCreated;

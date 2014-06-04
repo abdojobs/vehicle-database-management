@@ -57,14 +57,21 @@ namespace JarmuBerloDAL
         }
     }
 
-    public class Loans : DAL
+    public class Loans
     {
+        private IDAL dal;
+
+        public Loans(IDAL dal)
+        {
+            this.dal = dal;
+        }
+
         //visszateriti a berlesek listajat
         public List<Loan> GetLoanList(string makerFilter, string categoryFilter)
         {
             string query = "SELECT * FROM Berlesek";
             string error = string.Empty;
-            SqlDataReader rdr = ExecuteReader(query, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, ref error);
 
             List<Loan> loanList = new List<Loan>();
             if (error == "OK")
@@ -82,7 +89,7 @@ namespace JarmuBerloDAL
                     loanList.Add(v);
                 }
             }
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
 
             return loanList;
         }
@@ -101,7 +108,7 @@ namespace JarmuBerloDAL
             parameters[2] = startDate;
             parameters[3] = endDate;
 
-            return ExecuteStoredProcedureNonQuery("Berles", parameterNames, parameters);
+            return dal.ExecuteStoredProcedureNonQuery("Berles", parameterNames, parameters);
         }
 
         //visszateriti egy jarmure a datumokat, amelyeken foglalt
@@ -110,7 +117,7 @@ namespace JarmuBerloDAL
             string query = "SELECT BerlesKezdete, BerlesVege FROM Berlesek " +
                 "WHERE BerlesKezdete >= (GetDate() - 1) AND JarmuID = " + vehicleID.ToString();
             string error = string.Empty;
-            SqlDataReader rdr = ExecuteReader(query, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, ref error);
 
             string ret = "";
             if (error == "OK")
@@ -120,7 +127,7 @@ namespace JarmuBerloDAL
                     ret += "\n" + rdr[0].ToString().Split(' ')[0] + " - " + rdr[1].ToString().Split(' ')[0];
                 }
             }
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
 
             return ret.Equals("") ? "A járművet még nem foglalták le." : "A jármű a következő dátumokkon foglalt:\n" + ret;
         }
@@ -137,13 +144,13 @@ namespace JarmuBerloDAL
             parameters[1] = startDate;
             parameters[2] = endDate;
 
-            return ExecuteStoredProcedureNonQuery("Szabad", parameterNames, parameters);
+            return dal.ExecuteStoredProcedureNonQuery("Szabad", parameterNames, parameters);
         }
 
-        public string RemoveLoans(int vehicleID)
+        public void RemoveLoans(int vehicleID)
         {
             string query = "DELETE FROM Berlesek WHERE JarmuID = " + vehicleID.ToString();
-            return ExecuteNonQuery(query);
+            dal.ExecuteNonQuery(query);
         }
 
         //XML-t exportal a berlesekkel
@@ -153,14 +160,14 @@ namespace JarmuBerloDAL
                 " WHERE j.JarmuID = b.JarmuID AND j.GyartoID = g.GyartoID AND b.BerloID = Berlo.BerloID FOR XML PATH('Berles'), TYPE) " +
                 " FROM Berlok Berlo WHERE EXISTS(SELECT * FROM Berlesek b WHERE b.BerloID = Berlo.BerloID) FOR XML AUTO, ROOT('OsszesBerlo')";
             string error = string.Empty;
-            SqlDataReader rdr = ExecuteReader(query, ref error);
+            SqlDataReader rdr = dal.ExecuteReader(query, ref error);
             string result = "";
             while (rdr.Read())
             {
                 result += rdr[0].ToString();
             }
             File.WriteAllText(file, result.Replace("><", ">\n<"));
-            CloseDataReader(rdr);
+            dal.CloseDataReader(rdr);
             XslCompiledTransform xslTrans = new XslCompiledTransform();
             xslTrans.Load("LoanTransform.xslt");
             xslTrans.Transform(new XPathDocument(file), null, new XmlTextWriter(file.Replace(".xml", ".html"), null));

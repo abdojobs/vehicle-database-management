@@ -7,8 +7,15 @@ using System.Data.SqlClient;
 
 namespace JarmuBerlo.Tests
 {
-    public class StubDAL : IDAL
+    public class MockDAL : IDAL
     {
+        public bool ExecuteReaderCalled;
+
+        public MockDAL()
+        {
+            ExecuteReaderCalled = false;
+        }
+
         public bool CreateConnection()
         {
             return true;
@@ -21,6 +28,7 @@ namespace JarmuBerlo.Tests
 
         public SqlDataReader ExecuteReader(string query, ref string errorMessage)
         {
+            ExecuteReaderCalled = true;
             return null;
         }
 
@@ -31,7 +39,7 @@ namespace JarmuBerlo.Tests
 
         public void CloseDataReader(SqlDataReader rdr)
         {
-            
+
         }
 
         public string ExecuteNonQuery(string command)
