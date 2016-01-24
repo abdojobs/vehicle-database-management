@@ -1,0 +1,1 @@
+This project manages vehicle rentals.
